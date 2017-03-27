@@ -1,0 +1,8 @@
+/Users/bmccoy/Git/CoreSecuirtyToekn/bin/Debug/netcoreapp1.0/CoreSecuirtyToekn.deps.json
+/Users/bmccoy/Git/CoreSecuirtyToekn/bin/Debug/netcoreapp1.0/CoreSecuirtyToekn.runtimeconfig.json
+/Users/bmccoy/Git/CoreSecuirtyToekn/bin/Debug/netcoreapp1.0/CoreSecuirtyToekn.runtimeconfig.dev.json
+/Users/bmccoy/Git/CoreSecuirtyToekn/bin/Debug/netcoreapp1.0/CoreSecuirtyToekn.dll
+/Users/bmccoy/Git/CoreSecuirtyToekn/bin/Debug/netcoreapp1.0/CoreSecuirtyToekn.pdb
+/Users/bmccoy/Git/CoreSecuirtyToekn/obj/Debug/netcoreapp1.0/CoreSecuirtyToekn.AssemblyInfo.cs
+/Users/bmccoy/Git/CoreSecuirtyToekn/obj/Debug/netcoreapp1.0/CoreSecuirtyToekn.dll
+/Users/bmccoy/Git/CoreSecuirtyToekn/obj/Debug/netcoreapp1.0/CoreSecuirtyToekn.pdb
