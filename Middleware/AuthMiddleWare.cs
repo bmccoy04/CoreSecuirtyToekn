@@ -55,15 +55,15 @@ namespace CoreSecuirtyToekn.Middleware
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, now.ToString(), ClaimValueTypes.Integer64)
             };
-            
+
             var claimsIdentity = new ClaimsIdentity(claims);
             
             // Create the JWT and write it to a string
             var jwt = new JwtSecurityTokenHandler();
 
             var toke = jwt.CreateEncodedJwt(
-                issuer: "bryan",
-                audience: "myapp",
+                issuer: _options.Issuer,
+                audience: _options.Audience,
                 subject: claimsIdentity,
                 notBefore: DateTime.Now,
                 expires: now.Add(_options.Expiration),
