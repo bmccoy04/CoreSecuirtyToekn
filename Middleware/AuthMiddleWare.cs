@@ -4,7 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using CoreSecuirtyToekn.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -13,10 +15,13 @@ namespace CoreSecuirtyToekn.Middleware
     public class AuthMiddleWare
     {
         private readonly RequestDelegate _next;
+        private readonly TokenProviderOptions _options;
 
-        public AuthMiddleWare(RequestDelegate next)
+        public AuthMiddleWare(RequestDelegate next,
+            IOptions<TokenProviderOptions> options)
         {
             _next = next;
+            _options = options.Value;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -42,9 +47,6 @@ namespace CoreSecuirtyToekn.Middleware
         private async Task DoTokenStuff(HttpContext context)
         {
             var now = DateTime.UtcNow;
-            var secretKey = "mykeyisaverylargesecretssssssss";
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
-            var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             // Specifically add the jti (random nonce), iat (issued timestamp), and sub (subject/user) claims.
             // You can add other claims here, if you want:
             var claims = new Claim[]
@@ -53,8 +55,7 @@ namespace CoreSecuirtyToekn.Middleware
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, now.ToString(), ClaimValueTypes.Integer64)
             };
-            var experation = TimeSpan.FromMinutes(60);
-            var expires = now.Add(experation);
+            
             var claimsIdentity = new ClaimsIdentity(claims);
             
             // Create the JWT and write it to a string
@@ -65,16 +66,16 @@ namespace CoreSecuirtyToekn.Middleware
                 audience: "myapp",
                 subject: claimsIdentity,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddHours(1),
+                expires: now.Add(_options.Expiration),
                 issuedAt: DateTime.Now,
-                signingCredentials: credentials
+                signingCredentials: _options.SigningCredentials
             );
                 
 
             var response = new
             {
                 access_token = toke,// encodedJwt,
-                expires_in = (int)experation.TotalSeconds,
+                expires_in = (int)_options.Expiration.TotalSeconds,
                 user = "Bryan"
             };
 
